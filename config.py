@@ -6,13 +6,12 @@ SPARK_CLUSTER = [
     ('spark.executor.cores', '1'),
 ]
 
-# BOOTSTRAP_SERVERS = ['<ip1>:9092', '<ip2>:9092', '<ip3>:9092']
-BOOTSTRAP_SERVERS = ['localhost:9092']
+BOOTSTRAP_SERVERS = ['<ip1>:9092', '<ip2>:9092', '<ip3>:9092']
 LOG_PREFIX = "ckp/log_meetup_reporter-"
 
 CASSANDRA_CONFIG = {
-    "spark.cassandra.connection.host": '34.240.57.255',
-    "spark.cassandra.auth.username": 'cassandra',
-    "spark.cassandra.auth.password": 'cassandra'
+    "spark.cassandra.connection.host": '<ip>',
+    "spark.cassandra.auth.username": '<username>',
+    "spark.cassandra.auth.password": '<password>'
 }
 CASSANDRA_NAMESPACE = "meetup_net_project"

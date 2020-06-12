@@ -22,10 +22,8 @@ from tasks.task_b_5 import task_b_5
 os.environ[
     'PYSPARK_SUBMIT_ARGS'] = '--packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.0,com.datastax.spark:spark-cassandra-connector_2.11:2.5.0,com.github.jnr:jffi:1.2.19 pyspark-shell'
 
-# conf = pyspark.SparkConf().setAll(config.SPARK_CLUSTER)
-# spark = SparkSession.builder.config(conf=conf).master(config.SPARK_MASTER_URI).getOrCreate()
-
-spark = SparkSession.builder.getOrCreate()
+conf = pyspark.SparkConf().setAll(config.SPARK_CLUSTER)
+spark = SparkSession.builder.config(conf=conf).master(config.SPARK_MASTER_URI).getOrCreate()
 
 add_method(pyspark.sql.dataframe.DataFrame, send_to_kafka)
 add_method(pyspark.sql.dataframe.DataFrame, send_to_cassandra)
@@ -86,19 +84,3 @@ print("====")
 
 print("Waiting for termination")
 last_worker.awaitTermination()
-
-# bin/zookeeper-server-start.sh config/zookeeper.properties
-# bin/kafka-server-start.sh config/server-0.properties
-#
-# bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic popular-topics-by-country
-# bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic popular-topics-by-country_step-0
-# bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic popular-topics-by-country_step-1
-# bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic popular-topics-by-country_step-2
-#
-# bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic topics-by-country
-# bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic topics-by-country_step-0
-#
-# bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic topics-by-state
-# bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic topics-by-state_step-0
-#
-# bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic raw-meetups

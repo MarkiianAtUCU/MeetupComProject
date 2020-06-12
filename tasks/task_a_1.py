@@ -31,8 +31,8 @@ sum_maps_udf = F.udf(sum_maps,
 
 
 def task_a_1_step_0(json_parsed_df):
-    result = json_parsed_df.withWatermark("timestamp", "1 second").groupBy(
-        F.window("timestamp", "1 minute", "1 minute"),
+    result = json_parsed_df.withWatermark("timestamp", "1 minute").groupBy(
+        F.window("timestamp", "1 hour", "1 hour"),
         'country_name'
     ).agg(
         F.count('country_name').alias('count')
@@ -54,8 +54,8 @@ def task_a_1_step_1_final(spark):
     ])
 
     result = kafka_source(spark, config.BOOTSTRAP_SERVERS, "topics-by-country_step-0").parse_json(a1_struct) \
-        .withWatermark("datetime_end", "1 second").groupBy(
-        F.window("datetime_end", "6 minute", "1 minute")
+        .withWatermark("datetime_end", "1 minute").groupBy(
+        F.window("datetime_end", "6 hour", "1 hour")
     ).agg(
         F.first("window.start").alias("timestamp_start"),
         F.first("window.end").alias("timestamp_end"),
