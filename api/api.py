@@ -1,5 +1,5 @@
 from flask import Flask, jsonify
-# from db.cassandra import Cassandra
+from db.cassandra import Cassandra
 from kafka import KafkaConsumer, TopicPartition
 import json
 
@@ -49,8 +49,7 @@ if __name__ == "__main__":
     consumer = KafkaConsumer(
         enable_auto_commit=False,
         auto_offset_reset="earliest", 
-        bootstrap_servers=["localhost:9092"]),
-        value_deserializer=lambda x: json.loads(x.decode('utf-8'))))
+        bootstrap_servers=["localhost:9092"], value_deserializer=lambda x: json.loads(x.decode('utf-8')))
     consumer.assign([partition])
     db = Cassandra("<user>", "<password>", "<ips>", "<keyspace='meetup_net_project'>")
     app.run(debug=False)
