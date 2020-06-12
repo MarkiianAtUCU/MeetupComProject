@@ -23,7 +23,7 @@ class Cassandra:
 
     def get_event(self, event_id):
         result = self.session.execute(f"select * from event_by_id where event_id='{event_id}';")
-        return to_json(result)
+        return to_json(result)[0]
 
     def list_of_groups_by_city(self, city):
         result = self.session.execute(f"select * from groups_by_city where group_city='{city}';")
