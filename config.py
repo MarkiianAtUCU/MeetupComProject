@@ -15,7 +15,7 @@ SPARK_CLUSTER = [
 
 # BOOTSTRAP_SERVERS = ['<ip1>:9092', '<ip2>:9092', '<ip3>:9092']
 BOOTSTRAP_SERVERS = ['localhost:9092']
-LOG_PREFIX = "log_meetup_reporter-"
+LOG_PREFIX = "ckp/log_meetup_reporter-"
 
 TOPIC_LIST = ["US-cities-every-minute", "Programming-meetups", "US-meetups"]
 S3_OUTPUT_BUCKET = "mmarkiian.s3"
