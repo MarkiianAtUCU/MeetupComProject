@@ -18,7 +18,7 @@ a3_struct_common = T.StructType([
 
 def task_a_3_step_0(json_parsed_df):
     result = json_parsed_df.withColumn('topic_name_exp', F.explode('topic_name')) \
-        .withWatermark("timestamp", "1 minute").groupBy(
+        .withWatermark("timestamp", "1 second").groupBy(
         F.window("timestamp", "1 minute", "1 minute"),
         'country_name',
         'topic_name_exp'
@@ -45,7 +45,7 @@ def task_a_3_step_1(spark):
     ])
 
     result = kafka_source(spark, config.BOOTSTRAP_SERVERS, "popular-topics-by-country_step-0").parse_json(a3_struct) \
-        .withWatermark("datetime_end", "1 minute").groupBy(
+        .withWatermark("datetime_end", "1 second").groupBy(
         F.window("datetime_end", "6 minute", "1 minute"), 'country_name', 'topic_name_exp'
     ).agg(
         F.sum('topic_count').alias("topic_sum")
@@ -69,7 +69,7 @@ def task_a_3_step_2(spark):
         F.struct(
             col('topic_sum'),
             col('topic_name_exp'),
-        )).withWatermark("timetamp_start", "1 minute").groupBy(
+        )).withWatermark("timetamp_start", "1 second").groupBy(
         "timetamp_start",
         "timetamp_end",
         "country_name"
@@ -90,7 +90,7 @@ def task_a_3_step_2(spark):
 
 def task_a_3_step_3_final(spark):
     result = kafka_source(spark, config.BOOTSTRAP_SERVERS, "popular-topics-by-country_step-2").parse_json(a3_struct_common) \
-        .withWatermark("timetamp_start", "1 minute").groupBy(
+        .withWatermark("timetamp_start", "1 second").groupBy(
         "timetamp_start",
         "timetamp_end"
     ).agg(
@@ -113,6 +113,6 @@ def task_a_3_step_3_final(spark):
             F.concat(F.hour('timetamp_end'), lit(":"), F.minute('timetamp_end')).alias("time_end"),
             col('statistics')
         ).alias("res")
-    ).send_to_kafka(config.BOOTSTRAP_SERVERS, "popular-topics-by-country2", config.LOG_PREFIX)
+    ).send_to_kafka(config.BOOTSTRAP_SERVERS, "popular-topics-by-country", config.LOG_PREFIX)
 
     return result

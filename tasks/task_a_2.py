@@ -36,7 +36,7 @@ def task_a_2_step_0(json_parsed_df, states_names_df):
     result = json_parsed_df.filter(col('group_country') == 'us').withColumn(
         'topic_exploded', F.explode('topic_name')).withWatermark(
         "timestamp",
-        "1 minute"
+        "1 second"
     ).groupBy(
         F.window("timestamp", "1 minute", "1 minute"), 'group_state'
     ).agg(
@@ -63,7 +63,7 @@ def task_a_2_step_1_final(spark):
     ])
 
     result = kafka_source(spark, config.BOOTSTRAP_SERVERS, "topics-by-state_step-0").parse_json(a2_struct) \
-        .withWatermark("datetime_end", "1 minute").groupBy(
+        .withWatermark("datetime_end", "1 second").groupBy(
         F.window("datetime_end", "3 minute", "1 minute")
     ) \
         .agg(
