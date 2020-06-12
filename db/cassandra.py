@@ -31,4 +31,12 @@ class Cassandra:
 
     def events_by_group(self, group_id):
         result = self.session.execute(f"select * from events_by_group where group_id='{group_id}';")
-        return to_json(result)
+        result = to_json(result)
+        events_list = [i["event_id"] for i in result]
+        events_list = ["\'" + i + "\'" for i in events_list]
+        new_result = self.session.execute(f"select * from event_by_id where event_id in ({','.join(events_list)}) ;")
+
+        return to_json(new_result)
+
+if __name__ == "__main__":
+    pass
