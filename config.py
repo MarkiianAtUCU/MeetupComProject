@@ -1,12 +1,5 @@
 HTTP_STREAM_URL = "http://stream.meetup.com/2/rsvps"
 
-AWS_CREDENTIALS = {
-    "aws_access_key_id": "",
-    "aws_secret_access_key": "",
-    "aws_session_token": "",
-}
-
-
 SPARK_MASTER_URI = "spark:/<ip>:7077"
 SPARK_CLUSTER = [
     ('spark.executor.memory', '1500m'),
@@ -17,6 +10,9 @@ SPARK_CLUSTER = [
 BOOTSTRAP_SERVERS = ['localhost:9092']
 LOG_PREFIX = "ckp/log_meetup_reporter-"
 
-TOPIC_LIST = ["US-cities-every-minute", "Programming-meetups", "US-meetups"]
-S3_OUTPUT_BUCKET = "mmarkiian.s3"
-
+CASSANDRA_CONFIG = {
+    "spark.cassandra.connection.host": '34.240.57.255',
+    "spark.cassandra.auth.username": 'cassandra',
+    "spark.cassandra.auth.password": 'cassandra'
+}
+CASSANDRA_NAMESPACE = "meetup_net_project"
